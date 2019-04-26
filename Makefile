@@ -5,6 +5,7 @@ main.pdf: main.dvi
 	dvipdfmx $<
 
 main.dvi: main.tex bib.bib $(FIGURES) styles
+	aspell --lang=en -p ./.aspell.en.pws -c -t $<
 	platex $<
 	bibtex $(basename $<)
 	platex $<
