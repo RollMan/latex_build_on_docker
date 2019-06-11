@@ -25,5 +25,5 @@ docker build . -t alpine-texlive-ja
 でmain.texがビルドされる。
 
 ## 注意
-日本語に対応する場合はMakefileのplatexをuplatexに置換すること。 (TODO: うまいことやる)
-style filesの依存関係をうまいことできなかったので毎回buildされちゃう (TODO: うまいことやる)
+- 日本語に対応する場合はMakefileのplatexをuplatexに置換すること。 (TODO: うまいことやる)
+- style filesの依存関係をうまいことできなかったので毎回buildされちゃう (TODO: うまいことやる)
