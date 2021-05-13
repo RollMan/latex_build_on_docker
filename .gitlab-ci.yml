@@ -1,0 +1,9 @@
+package:
+  image: paperist/alpine-texlive-ja:latest
+  script:
+    - apk --no-cache update
+    - apk --no-cache add make aspell aspell-en
+    - make -f docker.mk NO_ASPELL="true"
+  artifacts:
+    paths:
+      - main.pdf
