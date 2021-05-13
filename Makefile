@@ -1,27 +1,20 @@
-STYLE_MAKEFILES := $(shell find ./sty -name Makefile)
-FIGURES := 
+IMAGE_NAME := alpine-texlive-ja
 
-main.pdf: main.dvi
-	dvipdfmx $<
+SRC := Dockerfile
+CREATION_TIME := $(shell docker inspect $(IMAGE_NAME) -f {{.Created}} | xargs date +%s -d)
+LATEST_MOD_TIME := $(shell echo $(SRC) | xargs -n 1 date +%s -r | awk '{if(m<$$1) m=$$1} END{print m}')
 
-main.dvi: main.tex bib.bib $(FIGURES) styles
-	aspell --lang=en -p ./.aspell.en.pws -c -t $<
-	platex $<
-	bibtex $(basename $<)
-	platex $<
-	platex $<
-	platex $<
+.PHONY:
+run: build_paper
 
-.PHONY: styles
-styles:
-	for makefile_path in $(STYLE_MAKEFILES); do\
-	    cd $${makefile_path%/*} && make;\
-	done
+.PHONY: build_image
+build_image:
+	if [ -z $(CREATION_TIME) ] || [ $(LATEST_MOD_TIME) -ge $(CREATION_TIME) ]; then \
+		docker build . -t $(IMAGE_NAME); \
+	else \
+		echo "Docker container image is ready up to date."; \
+	fi
 
-
-.PHONY: clean
-clean:
-	rm -f main.aux main.bbl main.blg main.dvi main.log main.pdf
-	for makefile_path in $(STYLE_MAKEFILES); do\
-	    cd $${makefile_path%/*} && make clean;\
-	done
+.PHONY: build_paper
+build_paper:
+	docker run -ti --rm -v $(PWD):/workdir $(IMAGE_NAME) make -f docker.mk
