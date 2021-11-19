@@ -1,5 +1,7 @@
 package:
   image: paperist/alpine-texlive-ja:latest
+  command: ["–insecure-registry", “adaptive.u-aizu.ac.jp”]
+
   script:
     - apk --no-cache update
     - apk --no-cache add make aspell aspell-en
