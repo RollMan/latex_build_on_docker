@@ -14,7 +14,7 @@ $(warning IMGSRC = $(IMGSRC))
 $(warning IMGOBJ = $(IMGOBJ))
 
 main.pdf: main.dvi
-	dvipdfmx -l $<
+	dvipdfmx $<
 
 main.dvi: $(SRC) $(IMGOBJ)
 	$(LATEX) $(TEXFLAGS) $<
