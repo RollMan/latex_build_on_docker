@@ -1,7 +1,3 @@
-services:
-  - name: docker:dind
-    entrypoint: ["dockerd-entrypoint.sh"]
-    command: ["--insecure-registry", "adaptive.u-aizu.ac.jp"]
 package:
   image: paperist/alpine-texlive-ja:latest
 
