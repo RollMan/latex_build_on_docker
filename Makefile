@@ -7,6 +7,10 @@ LATEST_MOD_TIME := $(shell echo $(SRC) | xargs -n 1 date +%s -r | awk '{if(m<$$1
 .PHONY:
 run: build_paper
 
+.PHONY: build_paper
+build_paper: build_image
+	docker run -ti --rm -v $(PWD):/workdir $(IMAGE_NAME) make -f docker.mk
+
 .PHONY: build_image
 build_image:
 	if [ -z $(CREATION_TIME) ] || [ $(LATEST_MOD_TIME) -ge $(CREATION_TIME) ]; then \
@@ -15,6 +19,6 @@ build_image:
 		echo "Docker container image is ready up to date."; \
 	fi
 
-.PHONY: build_paper
-build_paper:
-	docker run -ti --rm -v $(PWD):/workdir $(IMAGE_NAME) make -f docker.mk
+.PHONY: clean
+clean:
+	make -f docker.mk clean
